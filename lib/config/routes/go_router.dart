@@ -1,13 +1,13 @@
 import 'package:go_router/go_router.dart';
-import 'package:sneaker_store_app/data/models/product.dart';
-import 'package:sneaker_store_app/presentation/view/cart/cart_screen.dart';
-import 'package:sneaker_store_app/presentation/view/checkout/checkout_screen.dart';
-import 'package:sneaker_store_app/presentation/view/favourite/favourite_screen.dart';
-import 'package:sneaker_store_app/presentation/view/home/home_screen.dart';
+import 'package:e_commerce_app/data/models/product.dart';
+import 'package:e_commerce_app/presentation/view/cart/cart_screen.dart';
+import 'package:e_commerce_app/presentation/view/checkout/checkout_screen.dart';
+import 'package:e_commerce_app/presentation/view/favourite/favourite_screen.dart';
+import 'package:e_commerce_app/presentation/view/home/home_screen.dart';
 
-import 'package:sneaker_store_app/presentation/view/product_detail/product_detail_screen.dart';
-import 'package:sneaker_store_app/presentation/view/profile/edit_profile_screen.dart';
-import 'package:sneaker_store_app/presentation/view/profile/profile_screen.dart';
+import 'package:e_commerce_app/presentation/view/product_detail/product_detail_screen.dart';
+import 'package:e_commerce_app/presentation/view/profile/edit_profile_screen.dart';
+import 'package:e_commerce_app/presentation/view/profile/profile_screen.dart';
 
 final router = GoRouter(
   routes: [
