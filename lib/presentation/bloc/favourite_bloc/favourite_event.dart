@@ -7,6 +7,11 @@ class FavouriteEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class FavouriteProductsInit extends FavouriteEvent {
+  @override
+  List<Object> get props => [];
+}
+
 class AddTofavourite extends FavouriteEvent {
   final ProductModel product;
 

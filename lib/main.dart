@@ -1,3 +1,4 @@
+import 'package:e_commerce_app/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -28,11 +29,15 @@ class MyApp extends StatelessWidget {
             ..add(CategoriesFetched()),
         ),
         BlocProvider<CartBloc>(
-          create: (_) => getIt<CartBloc>(),
+          create: (_) => getIt<CartBloc>()..add(CartProductsInit()),
         ),
         BlocProvider<FavouriteBloc>(
-          create: (_) => getIt<FavouriteBloc>(),
+          create: (_) => getIt<FavouriteBloc>()..add(FavouriteProductsInit()),
         ),
+        BlocProvider<UserBloc>(
+            lazy: false,
+            create: (_) =>
+                getIt<UserBloc>()..add(GetUser(email: 'a@gmail.com')))
       ],
       child: MaterialApp.router(
         scrollBehavior: MyCustomScrollBehavior(),

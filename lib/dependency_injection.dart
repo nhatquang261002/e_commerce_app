@@ -1,6 +1,17 @@
 import 'package:dio/dio.dart';
+import 'package:e_commerce_app/data/data_sources/local/isar_db.dart';
+import 'package:e_commerce_app/domain/usecases/add_favourite.dart';
+import 'package:e_commerce_app/domain/usecases/add_to_cart.dart';
+import 'package:e_commerce_app/domain/usecases/delete_from_cart.dart';
+import 'package:e_commerce_app/domain/usecases/delete_from_favourite.dart';
+import 'package:e_commerce_app/domain/usecases/get_all_favourite_products.dart';
+import 'package:e_commerce_app/domain/usecases/get_all_in_cart_products.dart';
+import 'package:e_commerce_app/domain/usecases/get_single_product.dart';
+import 'package:e_commerce_app/domain/usecases/get_user.dart';
+import 'package:e_commerce_app/domain/usecases/reduce_in_cart.dart';
+import 'package:e_commerce_app/domain/usecases/save_user.dart';
+import 'package:e_commerce_app/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:isar/isar.dart';
 import 'package:e_commerce_app/data/data_sources/network/fake_store_api.dart';
 import 'package:e_commerce_app/data/repository/store_repository_impl.dart';
 import 'package:e_commerce_app/domain/repository/store_repository.dart';
@@ -17,11 +28,11 @@ void initializeDependencies() async {
   // Dio
   getIt.registerSingleton<Dio>(Dio());
 
-  // Isar
-
   // Dependencies
   getIt.registerSingleton<FakeStoreApi>(FakeStoreApi());
-  getIt.registerSingleton<StoreRepository>(StoreRepositoryImpl(api: getIt()));
+  getIt.registerSingleton<IsarDatabase>(IsarDatabase());
+  getIt.registerSingleton<StoreRepository>(
+      StoreRepositoryImpl(api: getIt(), isar: getIt()));
 
   // UseCase
   getIt.registerSingleton<GetAllProductsUseCase>(
@@ -30,12 +41,42 @@ void initializeDependencies() async {
       GetAllCategoriesUseCase(repository: getIt()));
   getIt.registerSingleton<GetSpecificCategoryUseCase>(
       GetSpecificCategoryUseCase(repository: getIt()));
+  getIt.registerSingleton<GetAllFavouriteProductsUseCase>(
+      GetAllFavouriteProductsUseCase(repository: getIt()));
+  getIt.registerSingleton<SaveFavouriteProductUseCase>(
+      SaveFavouriteProductUseCase(repository: getIt()));
+  getIt.registerSingleton<DeleteFavProductUseCase>(
+      DeleteFavProductUseCase(repository: getIt()));
+  getIt.registerSingleton<GetAllCartProductsUseCase>(
+      GetAllCartProductsUseCase(repository: getIt()));
+  getIt.registerSingleton<SaveInCartProductUseCase>(
+      SaveInCartProductUseCase(repository: getIt()));
+  getIt.registerSingleton<ReduceInCartUseCase>(
+      ReduceInCartUseCase(storeRepository: getIt()));
+  getIt.registerSingleton<DeleteInCartProductUseCase>(
+      DeleteInCartProductUseCase(repository: getIt()));
+  getIt.registerSingleton<GetSingleProductUseCase>(
+      GetSingleProductUseCase(repository: getIt()));
+  getIt.registerSingleton<SaveUserUserCase>(
+      SaveUserUserCase(repository: getIt()));
+  getIt.registerSingleton<GetUserUsecase>(GetUserUsecase(repository: getIt()));
 
   // Bloc
   getIt.registerSingleton<NetworkProductsBloc>(NetworkProductsBloc(
+      getSingleProductUseCase: getIt(),
       getAllProducts: getIt(),
       getAllCategories: getIt(),
       getSpecificCategory: getIt()));
-  getIt.registerSingleton<CartBloc>(CartBloc());
-  getIt.registerSingleton<FavouriteBloc>(FavouriteBloc());
+  getIt.registerSingleton<CartBloc>(CartBloc(
+    getAllCartProductsUseCase: getIt(),
+    saveInCartProductUseCase: getIt(),
+    deleteInCartProductUseCase: getIt(),
+    reduceInCartUseCase: getIt(),
+  ));
+  getIt.registerSingleton<FavouriteBloc>(FavouriteBloc(
+      saveFavouriteProductUseCase: getIt(),
+      getAllFavouriteProductsUseCase: getIt(),
+      deleteFavProductUseCase: getIt()));
+  getIt.registerSingleton<UserBloc>(
+      UserBloc(saveUserUserCase: getIt(), getUserUsecase: getIt()));
 }

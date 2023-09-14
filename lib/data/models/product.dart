@@ -2,14 +2,15 @@ import 'dart:convert';
 import 'package:e_commerce_app/domain/entities/product.dart';
 
 class ProductModel extends ProductEntity {
-  const ProductModel({
+  ProductModel({
     required int id,
     required String title,
-    required num price,
+    required double price,
     required String description,
     required String category,
     required String image,
-    required Rating rating,
+    bool isFavourite = false,
+    int quantityInCart = 0,
   }) : super(
             id: id,
             title: title,
@@ -17,7 +18,8 @@ class ProductModel extends ProductEntity {
             description: description,
             category: category,
             image: image,
-            rating: rating);
+            isFavourite: isFavourite,
+            quantityInCart: quantityInCart);
 
   Map<String, dynamic> toMap() {
     return {
@@ -27,7 +29,6 @@ class ProductModel extends ProductEntity {
       'description': description,
       'category': category,
       'image': image,
-      'rating': rating?.toMap(),
     };
   }
 
@@ -35,11 +36,12 @@ class ProductModel extends ProductEntity {
     return ProductModel(
       id: map['id'],
       title: map['title'] as String,
-      price: map['price'] as num,
+      price: map['price'] as double,
       description: map['description'] as String,
       category: map['category'] as String,
       image: map['image'] as String,
-      rating: Rating.fromMap(map['rating'] as Map<String, dynamic>),
+      quantityInCart: map['quantityInCart'] as int,
+      isFavourite: map['isFavourite'] as bool,
     );
   }
 

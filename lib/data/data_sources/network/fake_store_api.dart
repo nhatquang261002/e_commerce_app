@@ -1,5 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:e_commerce_app/data/data_sources/local/isar_db.dart';
 import 'package:e_commerce_app/data/models/product.dart';
+import 'package:e_commerce_app/dependency_injection.dart';
+import 'package:e_commerce_app/domain/entities/product.dart';
+import 'package:isar/isar.dart';
 
 class FakeStoreApi {
   final dio = Dio();
@@ -12,7 +16,18 @@ class FakeStoreApi {
       List<dynamic> l = response.data as List;
 
       List<ProductModel> products = [];
+      IsarDatabase db = getIt<IsarDatabase>();
+      Isar isar = await db.openIsar();
       for (var element in l) {
+        ProductEntity? entity = isar.productEntitys.getSync(element['id']);
+        if (entity != null) {
+          element['quantityInCart'] = entity.quantityInCart;
+          element['isFavourite'] = entity.isFavourite;
+        } else {
+          element['quantityInCart'] = 0;
+          element['isFavourite'] = false;
+        }
+        element['price'] = double.parse(element['price'].toString());
         products.add(ProductModel.fromMap(element as Map<String, dynamic>));
       }
 
@@ -103,10 +118,22 @@ class FakeStoreApi {
 
       List<dynamic> l = response.data as List;
       List<ProductModel> categoryProducts = [];
+      IsarDatabase db = getIt<IsarDatabase>();
+      Isar isar = await db.openIsar();
       for (var element in l) {
+        ProductEntity? entity = isar.productEntitys.getSync(element['id']);
+        if (entity != null) {
+          element['quantityInCart'] = entity.quantityInCart;
+          element['isFavourite'] = entity.isFavourite;
+        } else {
+          element['quantityInCart'] = 0;
+          element['isFavourite'] = false;
+        }
+        element['price'] = double.parse(element['price'].toString());
         categoryProducts
             .add(ProductModel.fromMap(element as Map<String, dynamic>));
       }
+
       return categoryProducts;
     } on DioException catch (e) {
       if (e.response != null) {

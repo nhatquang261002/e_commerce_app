@@ -27,3 +27,14 @@ class CategoryProductsFetched extends NetworkProductsEvent {
   @override
   List<Object> get props => [category];
 }
+
+class UpdateProduct extends NetworkProductsEvent {
+  final ProductModel product;
+
+  UpdateProduct(
+    this.product,
+  );
+
+  @override
+  List<Object> get props => [product];
+}

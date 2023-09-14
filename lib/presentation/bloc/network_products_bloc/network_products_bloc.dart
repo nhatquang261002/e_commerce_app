@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:e_commerce_app/domain/usecases/get_single_product.dart';
 import 'package:equatable/equatable.dart';
 import 'package:e_commerce_app/data/models/product.dart';
 import 'package:e_commerce_app/domain/usecases/get_all_categories.dart';
@@ -13,18 +14,22 @@ class NetworkProductsBloc
   final GetAllProductsUseCase _getAllProductsUseCase;
   final GetAllCategoriesUseCase _getAllCategoriesUseCase;
   final GetSpecificCategoryUseCase _getSpecificCategoryUseCase;
+  final GetSingleProductUseCase _getSingleProductUseCase;
 
   NetworkProductsBloc({
     required GetAllProductsUseCase getAllProducts,
     required GetAllCategoriesUseCase getAllCategories,
     required GetSpecificCategoryUseCase getSpecificCategory,
+    required GetSingleProductUseCase getSingleProductUseCase,
   })  : _getAllProductsUseCase = getAllProducts,
         _getAllCategoriesUseCase = getAllCategories,
         _getSpecificCategoryUseCase = getSpecificCategory,
+        _getSingleProductUseCase = getSingleProductUseCase,
         super(const NetworkProductsState()) {
     on<ProductsFetched>(_productsFetched);
     on<CategoriesFetched>(_categoriesFetched);
     on<CategoryProductsFetched>(_categoryProductsFetched);
+    on<UpdateProduct>(_updateProduct);
   }
 
   Future<void> _productsFetched(
@@ -78,5 +83,15 @@ class NetworkProductsBloc
     } catch (_) {
       emit(state.copyWith(status: NetworkStatus.failure));
     }
+  }
+
+  void _updateProduct(
+      UpdateProduct event, Emitter<NetworkProductsState> emit) async {
+    List<ProductModel> list = [];
+    list = [...state.products];
+    list.where((element) => element.id == event.product.id).first.isFavourite =
+        event.product.isFavourite;
+
+    emit(state.copyWith(products: list));
   }
 }

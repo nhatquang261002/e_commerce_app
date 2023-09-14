@@ -1,7 +1,16 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:e_commerce_app/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../../data/models/user.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({Key? key}) : super(key: key);
+  UserBloc userBloc;
+  EditProfileScreen({
+    Key? key,
+    required this.userBloc,
+  }) : super(key: key);
 
   @override
   _EditProfileScreenState createState() => _EditProfileScreenState();
@@ -13,6 +22,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final lastNameController = TextEditingController();
   final locationController = TextEditingController();
   final phoneNumberController = TextEditingController();
+
+  @override
+  void initState() {
+    firstNameController.text = widget.userBloc.state.user.firstName ?? '';
+    lastNameController.text = widget.userBloc.state.user.lastName ?? '';
+    locationController.text = widget.userBloc.state.user.location ?? '';
+    phoneNumberController.text = widget.userBloc.state.user.phoneNumber == null
+        ? ''
+        : widget.userBloc.state.user.phoneNumber.toString();
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -41,7 +61,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              final user = UserModel(
+                email: 'a@gmail.com',
+                password: widget.userBloc.state.user.password,
+                firstName: firstNameController.text,
+                lastName: lastNameController.text,
+                location: locationController.text,
+                phoneNumber: phoneNumberController.text == ''
+                    ? null
+                    : int.parse(phoneNumberController.text),
+              );
+
+              context.read<UserBloc>().add(SaveUser(user: user));
+            },
             icon: const Icon(Icons.save_outlined),
             tooltip: 'Save',
           )

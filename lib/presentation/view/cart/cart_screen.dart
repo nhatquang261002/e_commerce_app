@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:e_commerce_app/presentation/view/cart/widgets/cart_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -28,7 +29,7 @@ class CartScreen extends StatelessWidget {
         var cartProducts = state.products;
         double cartTotal = 0;
         for (var e in cartProducts) {
-          cartTotal += e.price!.toDouble();
+          cartTotal += e.price!.toDouble() * e.quantityInCart!;
         }
         return Scaffold(
           appBar: AppBar(
@@ -61,41 +62,6 @@ class CartScreen extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Slidable(
-                            startActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              extentRatio: 0.2,
-                              children: [
-                                // Container(
-                                //   decoration: BoxDecoration(
-                                //     color: primaryColor,
-                                //     borderRadius: BorderRadius.circular(12),
-                                //   ),
-                                //   child: Column(
-                                //     mainAxisSize: MainAxisSize.max,
-                                //     mainAxisAlignment:
-                                //         MainAxisAlignment.spaceAround,
-                                //     children: [
-                                //       IconButton(
-                                //           onPressed: () {},
-                                //           icon: Icon(Icons.add)),
-                                //       Text('1'),
-                                //       IconButton(
-                                //           onPressed: () {},
-                                //           icon: Icon(Icons.remove)),
-                                //     ],
-                                //   ),
-                                // )
-                                SlidableAction(
-                                  onPressed: (_) {
-                                    context.read<CartBloc>().add(AddToCart(
-                                        product: cartProducts[index]));
-                                  },
-                                  borderRadius: BorderRadius.circular(12.0),
-                                  backgroundColor: primaryColor,
-                                  icon: Icons.add,
-                                ),
-                              ],
-                            ),
                             endActionPane: ActionPane(
                               motion: const ScrollMotion(),
                               extentRatio: 0.2,
@@ -111,34 +77,8 @@ class CartScreen extends StatelessWidget {
                                 )
                               ],
                             ),
-                            child: SizedBox(
-                              height: size.height * 0.1,
-                              child: ListTile(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)),
-                                tileColor: Colors.white,
-                                leading: Container(
-                                  width: size.width * 0.1,
-                                  padding: const EdgeInsetsDirectional.all(8.0),
-                                  decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.circular(12.0)),
-                                  child: Image.network(
-                                    cartProducts[index].image!,
-                                    fit: BoxFit.fitHeight,
-                                  ),
-                                ),
-                                title: Text(
-                                  cartProducts[index].title!,
-                                  overflow: TextOverflow.ellipsis,
-                                  maxLines: 1,
-                                  style: textTheme.displayMedium,
-                                ),
-                                subtitle: Text(
-                                  '\$ ${state.products[index].price}',
-                                  style: textTheme.headlineSmall,
-                                ),
-                              ),
+                            child: CartTile(
+                              product: cartProducts[index],
                             ),
                           ),
                         );
@@ -214,7 +154,7 @@ class CartScreen extends StatelessWidget {
                                   context: context,
                                   builder: (context) => const AlertDialog(
                                         content: Text(
-                                            'There is no item in your cartProducts!'),
+                                            'There is no item in your cart!'),
                                       ));
                             } else {
                               context.push('/cart/checkout', extra: cartTotal);

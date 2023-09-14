@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:e_commerce_app/presentation/bloc/network_products_bloc/network_products_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -8,8 +9,8 @@ import 'package:e_commerce_app/presentation/bloc/favourite_bloc/favourite_bloc.d
 import 'package:e_commerce_app/presentation/view/widgets/added_to_cart_dialog.dart';
 
 class ItemTile extends StatelessWidget {
-  final ProductModel product;
-  const ItemTile({
+  ProductModel product;
+  ItemTile({
     Key? key,
     required this.product,
   }) : super(key: key);
@@ -22,7 +23,7 @@ class ItemTile extends StatelessWidget {
 
     return Container(
       margin: const EdgeInsets.only(right: 16),
-      width: size.width * 0.3,
+      width: size.width * 0.35,
       decoration: ShapeDecoration(
         color: Colors.white,
         shape: RoundedRectangleBorder(
@@ -39,18 +40,42 @@ class ItemTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                  onPressed: () {
-                    context
-                        .read<FavouriteBloc>()
-                        .add(AddTofavourite(product: product));
+                BlocBuilder<FavouriteBloc, FavouriteState>(
+                  builder: (context, favState) {
+                    final prodInFav = favState.favourites
+                        .where(
+                          (element) => element.id == product.id,
+                        )
+                        .firstOrNull;
+                    if (prodInFav != null) {
+                      product = prodInFav;
+                    }
+                    return IconButton(
+                      onPressed: () {
+                        if (product.isFavourite == false) {
+                          context
+                              .read<NetworkProductsBloc>()
+                              .add(UpdateProduct(product));
+                          context
+                              .read<FavouriteBloc>()
+                              .add(AddTofavourite(product: product));
+                        } else {
+                          context
+                              .read<NetworkProductsBloc>()
+                              .add(UpdateProduct(product));
+                          context
+                              .read<FavouriteBloc>()
+                              .add(DeleteFromFavourite(product: product));
+                        }
+                      },
+                      isSelected: product.isFavourite,
+                      icon: const Icon(Icons.favorite_border_outlined),
+                      selectedIcon: const Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      ),
+                    );
                   },
-                  isSelected: true,
-                  icon: const Icon(Icons.favorite_border_outlined),
-                  selectedIcon: const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ),
                 ),
                 Center(
                   child: SizedBox(
@@ -87,12 +112,11 @@ class ItemTile extends StatelessWidget {
               ],
             ),
             Positioned(
-              width: size.width * 0.3,
+              width: size.width * 0.35,
               bottom: 0,
               right: 0,
               child: Row(
                 mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
@@ -104,6 +128,7 @@ class ItemTile extends StatelessWidget {
                           fontWeight: FontWeight.w400),
                     ),
                   ),
+                  const Spacer(),
                   IconButton(
                     onPressed: () {
                       context.read<CartBloc>().add(AddToCart(product: product));

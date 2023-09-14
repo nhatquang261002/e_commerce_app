@@ -8,9 +8,13 @@ import 'package:e_commerce_app/data/models/product.dart';
 import 'package:e_commerce_app/presentation/bloc/cart_bloc/cart_bloc.dart';
 import 'package:e_commerce_app/presentation/view/widgets/added_to_cart_dialog.dart';
 
+import '../../bloc/favourite_bloc/favourite_bloc.dart';
+import '../../bloc/network_products_bloc/network_products_bloc.dart';
+
+// ignore: must_be_immutable
 class ProductDetailScreen extends StatelessWidget {
-  final ProductModel product;
-  const ProductDetailScreen({
+  ProductModel product;
+  ProductDetailScreen({
     Key? key,
     required this.product,
   }) : super(key: key);
@@ -31,15 +35,19 @@ class ProductDetailScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              context.push('/cart');
+              context.push('/cart',
+                  extra: context.read<CartBloc>().state.products);
             },
-            icon: const badges.Badge(
-                badgeContent: Icon(
+            icon: badges.Badge(
+                badgeContent: const Icon(
                   Icons.circle,
                   color: Colors.red,
                   size: 3,
                 ),
-                child: Icon(Icons.shopping_bag_outlined)),
+                showBadge: context.watch<CartBloc>().state.products.isEmpty
+                    ? false
+                    : true,
+                child: const Icon(Icons.shopping_bag_outlined)),
           )
         ],
       ),
@@ -96,10 +104,42 @@ class ProductDetailScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                IconButton(
-                  style: IconButton.styleFrom(backgroundColor: backgroundColor),
-                  onPressed: () {},
-                  icon: const Icon(Icons.bookmark_border_outlined),
+                BlocBuilder<FavouriteBloc, FavouriteState>(
+                  builder: (context, favState) {
+                    final prodInFav = favState.favourites
+                        .where(
+                          (element) => element.id == product.id,
+                        )
+                        .firstOrNull;
+                    if (prodInFav != null) {
+                      product = prodInFav;
+                    }
+                    return IconButton(
+                      onPressed: () {
+                        if (product.isFavourite == false) {
+                          context
+                              .read<NetworkProductsBloc>()
+                              .add(UpdateProduct(product));
+                          context
+                              .read<FavouriteBloc>()
+                              .add(AddTofavourite(product: product));
+                        } else {
+                          context
+                              .read<NetworkProductsBloc>()
+                              .add(UpdateProduct(product));
+                          context
+                              .read<FavouriteBloc>()
+                              .add(DeleteFromFavourite(product: product));
+                        }
+                      },
+                      isSelected: product.isFavourite,
+                      icon: const Icon(Icons.favorite_border_outlined),
+                      selectedIcon: const Icon(
+                        Icons.favorite,
+                        color: Colors.red,
+                      ),
+                    );
+                  },
                 ),
                 TextButton.icon(
                   style: TextButton.styleFrom(

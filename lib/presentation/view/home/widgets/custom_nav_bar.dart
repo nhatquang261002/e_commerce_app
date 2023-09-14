@@ -1,4 +1,8 @@
+import 'package:e_commerce_app/data/models/user.dart';
+import 'package:e_commerce_app/presentation/bloc/favourite_bloc/favourite_bloc.dart';
+import 'package:e_commerce_app/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomNavBar extends StatelessWidget {
@@ -62,7 +66,8 @@ class CustomNavBar extends StatelessWidget {
                 IconButton(
                   isSelected: false,
                   onPressed: () {
-                    context.push('/favourite');
+                    context.push('/favourite',
+                        extra: context.read<FavouriteBloc>());
                   },
                   selectedIcon: Icon(
                     Icons.favorite_border_outlined,
@@ -84,7 +89,8 @@ class CustomNavBar extends StatelessWidget {
                 IconButton(
                   isSelected: false,
                   onPressed: () {
-                    context.push('/profile');
+                    final bloc = context.read<UserBloc>().state.user;
+                    context.push('/profile', extra: bloc);
                   },
                   selectedIcon: Icon(
                     Icons.person_outline,

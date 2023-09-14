@@ -2,37 +2,34 @@
 
 import 'dart:convert';
 
-import 'package:equatable/equatable.dart';
+import 'package:isar/isar.dart';
 
-// ignore: must_be_immutable
-class ProductEntity extends Equatable {
+part 'product.g.dart';
+
+@collection
+class ProductEntity {
+  final Id isarId;
+  bool? isFavourite;
+  int? quantityInCart;
   final int? id;
   final String? title;
-  final num? price;
+  final double? price;
   final String? description;
   final String? category;
   final String? image;
+  @ignore
   final Rating? rating;
-  const ProductEntity(
+  ProductEntity(
       {this.id,
       this.title,
       this.price,
       this.description,
       this.category,
       this.image,
-      this.rating});
-
-  @override
-  List<Object?> get props {
-    return [
-      id,
-      title,
-      price,
-      description,
-      category,
-      image,
-    ];
-  }
+      this.isFavourite,
+      this.quantityInCart,
+      this.rating})
+      : isarId = id!;
 }
 
 class Rating {
