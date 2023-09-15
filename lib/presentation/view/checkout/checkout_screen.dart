@@ -30,9 +30,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Widget build(BuildContext context) {
     // Colors
     final primaryColor = Theme.of(context).colorScheme.primary;
-    final inverseSurfaceColor = Theme.of(context).colorScheme.inverseSurface;
+    // final inverseSurfaceColor = Theme.of(context).colorScheme.inverseSurface;
     final surfaceColor = Theme.of(context).colorScheme.surface;
-    final backgroundColor = Theme.of(context).colorScheme.background;
+    // final backgroundColor = Theme.of(context).colorScheme.background;
 
     // TextTheme
     final textTheme = Theme.of(context).textTheme;

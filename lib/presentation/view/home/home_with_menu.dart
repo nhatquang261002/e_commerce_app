@@ -36,8 +36,7 @@ class _HomeWithMenuState extends State<HomeWithMenu> {
     return ZoomDrawer(
       controller: _zoomDrawerController,
       menuBackgroundColor: Theme.of(context).colorScheme.primary,
-      mainScreen:
-          homeScreen(context, _searchController, _categoryScrollController),
+      mainScreen: const HomeScreen(),
       menuScreen: menuScreen(context),
       slideWidth: MediaQuery.of(context).size.width * 0.65,
       mainScreenTapClose: true,
@@ -96,7 +95,10 @@ Widget menuScreen(BuildContext context) {
       const Icon(
         Icons.logout_outlined,
         color: Colors.white,
-      ): () {}
+      ): () {
+        context.read<UserBloc>().add(const Logout());
+        context.go('/login');
+      }
     }
   };
 
@@ -132,14 +134,17 @@ Widget menuScreen(BuildContext context) {
             },
           ),
           const Divider(),
-          ListTile(
-            leading: menu.values.last.keys.first,
-            title: Text(
-              menu.keys.last,
-              style: textTheme.headlineSmall!.copyWith(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500),
+          InkWell(
+            onTap: menu.values.last.values.first,
+            child: ListTile(
+              leading: menu.values.last.keys.first,
+              title: Text(
+                menu.keys.last,
+                style: textTheme.headlineSmall!.copyWith(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
             ),
           )
         ],

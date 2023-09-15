@@ -1,4 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
+// ignore_for_file: public_member_api_docs, sort_constructors_first, library_private_types_in_public_api
 import 'package:e_commerce_app/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/models/user.dart';
 
 class EditProfileScreen extends StatefulWidget {
-  UserBloc userBloc;
-  EditProfileScreen({
+  final UserBloc userBloc;
+  const EditProfileScreen({
     Key? key,
     required this.userBloc,
   }) : super(key: key);

@@ -1,4 +1,3 @@
-import 'package:e_commerce_app/data/models/user.dart';
 import 'package:e_commerce_app/presentation/bloc/favourite_bloc/favourite_bloc.dart';
 import 'package:e_commerce_app/presentation/bloc/user_bloc/user_bloc.dart';
 import 'package:flutter/material.dart';

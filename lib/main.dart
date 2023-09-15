@@ -35,9 +35,8 @@ class MyApp extends StatelessWidget {
           create: (_) => getIt<FavouriteBloc>()..add(FavouriteProductsInit()),
         ),
         BlocProvider<UserBloc>(
-            lazy: false,
-            create: (_) =>
-                getIt<UserBloc>()..add(GetUser(email: 'a@gmail.com')))
+          create: (_) => getIt<UserBloc>(),
+        ),
       ],
       child: MaterialApp.router(
         scrollBehavior: MyCustomScrollBehavior(),

@@ -11,21 +11,39 @@ import 'package:e_commerce_app/presentation/view/home/widgets/category_button.da
 import 'package:e_commerce_app/presentation/view/home/widgets/custom_app_bar.dart';
 import 'package:e_commerce_app/presentation/view/home/widgets/item_tile.dart';
 
-Widget homeScreen(BuildContext context, TextEditingController searchController,
-    ScrollController categoryScrollController) {
-  // Colors
-  // final primaryColor = Theme.of(context).colorScheme.primary;
-  final inverseSurfaceColor = Theme.of(context).colorScheme.inverseSurface;
-  final surfaceColor = Theme.of(context).colorScheme.surface;
-  final backgroundColor = Theme.of(context).colorScheme.background;
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
-  var selectedIndex = 0;
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
-  // Screen size
-  final size = MediaQuery.of(context).size;
+class _HomeScreenState extends State<HomeScreen> {
+  // controllers
+  final searchController = TextEditingController();
+  final scrollController = ScrollController();
+  final categoryScrollController = ScrollController();
 
-  // View
-  return StatefulBuilder(builder: (context, setState) {
+  @override
+  void dispose() {
+    searchController.dispose();
+    scrollController.dispose();
+    categoryScrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Colors
+    // final primaryColor = Theme.of(context).colorScheme.primary;
+    final inverseSurfaceColor = Theme.of(context).colorScheme.inverseSurface;
+    final surfaceColor = Theme.of(context).colorScheme.surface;
+    final backgroundColor = Theme.of(context).colorScheme.background;
+
+    var selectedIndex = 0;
+
+    // Screen size
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: backgroundColor,
 
@@ -253,5 +271,5 @@ Widget homeScreen(BuildContext context, TextEditingController searchController,
         ),
       ),
     );
-  });
+  }
 }

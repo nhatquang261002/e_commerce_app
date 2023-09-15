@@ -8,6 +8,8 @@ import 'package:e_commerce_app/domain/usecases/get_all_favourite_products.dart';
 import 'package:e_commerce_app/domain/usecases/get_all_in_cart_products.dart';
 import 'package:e_commerce_app/domain/usecases/get_single_product.dart';
 import 'package:e_commerce_app/domain/usecases/get_user.dart';
+import 'package:e_commerce_app/domain/usecases/login.dart';
+import 'package:e_commerce_app/domain/usecases/logout.dart';
 import 'package:e_commerce_app/domain/usecases/reduce_in_cart.dart';
 import 'package:e_commerce_app/domain/usecases/save_user.dart';
 import 'package:e_commerce_app/presentation/bloc/user_bloc/user_bloc.dart';
@@ -60,6 +62,8 @@ void initializeDependencies() async {
   getIt.registerSingleton<SaveUserUserCase>(
       SaveUserUserCase(repository: getIt()));
   getIt.registerSingleton<GetUserUsecase>(GetUserUsecase(repository: getIt()));
+  getIt.registerSingleton<LoginUseCase>(const LoginUseCase());
+  getIt.registerSingleton(const LogoutUseCase());
 
   // Bloc
   getIt.registerSingleton<NetworkProductsBloc>(NetworkProductsBloc(
@@ -77,6 +81,9 @@ void initializeDependencies() async {
       saveFavouriteProductUseCase: getIt(),
       getAllFavouriteProductsUseCase: getIt(),
       deleteFavProductUseCase: getIt()));
-  getIt.registerSingleton<UserBloc>(
-      UserBloc(saveUserUserCase: getIt(), getUserUsecase: getIt()));
+  getIt.registerSingleton<UserBloc>(UserBloc(
+      saveUserUserCase: getIt(),
+      getUserUsecase: getIt(),
+      loginUseCase: getIt(),
+      logoutUseCase: getIt()));
 }

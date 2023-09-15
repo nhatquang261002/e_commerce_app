@@ -8,6 +8,20 @@ class UserEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class Login extends UserEvent {
+  const Login();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class Logout extends UserEvent {
+  const Logout();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class GetUser extends UserEvent {
   final String email;
   const GetUser({
