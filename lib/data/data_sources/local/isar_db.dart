@@ -151,10 +151,9 @@ class IsarDatabase {
     db.writeTxnSync(() => db.userEntitys.putSync(user));
   }
 
-  Future<UserModel> readUser(String email) async {
+  Future<UserModel> readUser() async {
     final db = await isar;
-    UserEntity? entity =
-        await db.userEntitys.where().filter().emailEqualTo(email).findFirst();
+    UserEntity? entity = await db.userEntitys.where().findFirst();
     UserModel user = UserModel(
       email: entity!.email,
       password: entity.password,

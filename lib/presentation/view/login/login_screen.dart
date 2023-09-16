@@ -48,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Text(
             'Fill Your Details Or Continue With Social Media',
             maxLines: 2,
+            textAlign: TextAlign.center,
             style: textTheme.displayMedium!.copyWith(color: Colors.grey),
           ),
           const SizedBox(

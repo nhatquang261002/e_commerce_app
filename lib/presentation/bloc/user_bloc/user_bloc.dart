@@ -45,7 +45,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
 
   void _getUser(GetUser event, Emitter<UserState> emit) async {
     emit(state.copyWith(userStatus: UserStatus.update));
-    UserModel user = await _getUserUsecase(email: event.email);
+    UserModel user = await _getUserUsecase();
     emit(state.copyWith(
       user: user,
       userStatus: UserStatus.login,

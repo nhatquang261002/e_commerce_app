@@ -24,7 +24,7 @@ abstract class StoreRepository {
 
   Future<void> saveUser({required UserModel user});
 
-  Future<UserModel> getUser({required String email});
+  Future<UserModel> getUser();
 
   Future<void> reduceInCart({required ProductModel product});
 }

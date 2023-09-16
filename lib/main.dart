@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
           create: (_) => getIt<FavouriteBloc>()..add(FavouriteProductsInit()),
         ),
         BlocProvider<UserBloc>(
-          create: (_) => getIt<UserBloc>(),
+          create: (_) => getIt<UserBloc>()..add(GetUser(email: 'a@gmail.com')),
         ),
       ],
       child: MaterialApp.router(

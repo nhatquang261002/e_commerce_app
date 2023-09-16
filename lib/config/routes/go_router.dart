@@ -12,7 +12,7 @@ import 'package:e_commerce_app/presentation/view/profile/edit_profile_screen.dar
 import 'package:e_commerce_app/presentation/view/profile/profile_screen.dart';
 
 final router = GoRouter(
-  initialLocation: '/login',
+  initialLocation: '/',
   routes: [
     GoRoute(
       path: '/login',

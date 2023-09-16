@@ -83,8 +83,8 @@ class StoreRepositoryImpl implements StoreRepository {
   }
 
   @override
-  Future<UserModel> getUser({required String email}) async {
-    return await _isar.readUser(email);
+  Future<UserModel> getUser() async {
+    return await _isar.readUser();
   }
 
   @override

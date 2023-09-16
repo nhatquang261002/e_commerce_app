@@ -7,7 +7,7 @@ class GetUserUsecase {
 
   GetUserUsecase({required this.repository});
 
-  Future<UserModel> call({required String email}) async {
-    return repository.getUser(email: email);
+  Future<UserModel> call() async {
+    return repository.getUser();
   }
 }
